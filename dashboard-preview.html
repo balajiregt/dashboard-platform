@@ -4,22 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QA Team Dashboard - Preview</title>
+    <title>QA Team Dashboard - Tabbed Preview</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .health-bar {
-            transition: width 0.5s ease-in-out;
+        .tab-content {
+            display: none;
         }
 
-        .card-hover {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        .tab-content.active {
+            display: block;
         }
 
-        .card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        .tab-button.active {
+            background-color: #2563eb;
+            color: white;
+            border-color: #2563eb;
         }
     </style>
 </head>
@@ -51,527 +52,595 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Page Title -->
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-2">Team Performance Overview</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">QA Team Dashboard</h2>
             <p class="text-gray-600">Real-time insights into your QA team's test execution and quality metrics</p>
         </div>
 
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-chart-bar text-blue-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Total Tests</p>
-                        <p class="text-2xl font-bold text-gray-900">1,247</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Pass Rate</p>
-                        <p class="text-2xl font-bold text-green-600">87.3%</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-times-circle text-red-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Fail Rate</p>
-                        <p class="text-2xl font-bold text-red-600">12.7%</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-heartbeat text-purple-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Suite Health</p>
-                        <p class="text-2xl font-bold text-purple-600">82.1%</p>
-                    </div>
-                </div>
+        <!-- Tab Navigation -->
+        <div class="bg-white rounded-lg shadow-sm mb-8">
+            <div class="border-b border-gray-200">
+                <nav class="flex flex-wrap space-x-1 px-6" aria-label="Tabs">
+                    <button
+                        class="tab-button active py-4 px-3 border-b-2 border-blue-600 text-sm font-medium text-blue-600 rounded-t-lg"
+                        onclick="showTab('overview')">
+                        <i class="fas fa-chart-line mr-2"></i>Team Performance Overview
+                    </button>
+                    <button
+                        class="tab-button py-4 px-3 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 rounded-t-lg"
+                        onclick="showTab('flaky')">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Flaky Test Pattern Detection
+                    </button>
+                    <button
+                        class="tab-button py-4 px-3 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 rounded-t-lg"
+                        onclick="showTab('intent')">
+                        <i class="fas fa-bullseye mr-2"></i>Test Intent & Purpose
+                    </button>
+                    <button
+                        class="tab-button py-4 px-3 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 rounded-t-lg"
+                        onclick="showTab('tags')">
+                        <i class="fas fa-tags mr-2"></i>Tag/Grep Based Metrics
+                    </button>
+                    <button
+                        class="tab-button py-4 px-3 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 rounded-t-lg"
+                        onclick="showTab('recent')">
+                        <i class="fas fa-clock mr-2"></i>Recent Test Results
+                    </button>
+                    <button
+                        class="tab-button py-4 px-3 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 rounded-t-lg"
+                        onclick="showTab('trace')">
+                        <i class="fas fa-search mr-2"></i>Trace Files & Analysis
+                    </button>
+                </nav>
             </div>
         </div>
 
-        <!-- Charts Row -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <!-- Status Distribution -->
-            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Test Status Distribution</h3>
-                <div class="h-64">
-                    <canvas id="statusChart"></canvas>
+        <!-- Tab Content -->
+        
+        <!-- Tab 1: Team Performance Overview -->
+        <div id="overview" class="tab-content active">
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-chart-bar text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Tests</p>
+                            <p class="text-2xl font-bold text-gray-900">1,247</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Pass Rate</p>
+                            <p class="text-2xl font-bold text-green-600">87.3%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-times-circle text-red-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Fail Rate</p>
+                            <p class="text-2xl font-bold text-red-600">12.7%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-heartbeat text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Suite Health</p>
+                            <p class="text-2xl font-bold text-purple-600">92.1%</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Daily Trends -->
-            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Daily Test Execution Trends</h3>
-                <div class="h-64">
-                    <canvas id="trendChart"></canvas>
+            <!-- Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Test Results Distribution</h3>
+                    <div class="w-full h-64">
+                        <canvas id="resultsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Performance Trend (Last 7 Days)</h3>
+                    <div class="w-full h-64">
+                        <canvas id="trendChart"></canvas>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Core Features Row -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <!-- Intent Capturing -->
-            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                    <span class="mr-2 text-2xl">🎯</span>
-                    Test Intent & Purpose
-                </h3>
+            <!-- Team Members Performance -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Team Members Performance</h3>
                 <div class="space-y-4">
-                    <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
-                        <div>
-                            <p class="font-medium text-blue-900">Intent: Regression</p>
-                            <p class="text-sm text-blue-700">Purpose: Ensure new changes don't break existing
-                                functionality</p>
-                            <p class="text-xs text-blue-600 mt-1">Executed: 45 times | Last: 2 hours ago</p>
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">John Doe</p>
+                                <p class="text-sm text-gray-600">Senior QA Engineer</p>
+                            </div>
                         </div>
-                        <span class="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
-                            Regression
-                        </span>
-                    </div>
-                    <div
-                        class="flex items-center justify-between p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
-                        <div>
-                            <p class="font-medium text-green-900">Intent: Development</p>
-                            <p class="text-sm text-green-700">Purpose: Validate new features during development phase
-                            </p>
-                            <p class="text-xs text-green-600 mt-1">Executed: 32 times | Last: 1 hour ago</p>
+                        <div class="text-right">
+                            <p class="text-lg font-semibold text-green-600">94.2%</p>
+                            <p class="text-sm text-gray-600">Pass Rate</p>
                         </div>
-                        <span class="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
-                            Development
-                        </span>
                     </div>
-                    <div
-                        class="flex items-center justify-between p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
-                        <div>
-                            <p class="font-medium text-purple-900">Intent: Bugfix</p>
-                            <p class="text-sm text-purple-700">Purpose: Verify specific bug fixes and related
-                                functionality</p>
-                            <p class="text-xs text-purple-600 mt-1">Executed: 18 times | Last: 30 min ago</p>
-                        </div>
-                        <span class="text-xs bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium">
-                            Bugfix
-                        </span>
-                    </div>
-                    <div
-                        class="flex items-center justify-between p-4 bg-orange-50 rounded-lg border-l-4 border-orange-400">
-                        <div>
-                            <p class="font-medium text-orange-900">Intent: Release</p>
-                            <p class="text-sm text-orange-700">Purpose: Final validation before production deployment
-                            </p>
-                            <p class="text-xs text-orange-600 mt-1">Executed: 12 times | Last: 4 hours ago</p>
-                        </div>
-                        <span class="text-xs bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-medium">
-                            Release
-                        </span>
-                    </div>
-                </div>
 
-                <!-- Intent Parameters -->
-                <div class="mt-4 p-4 bg-gray-50 rounded-lg">
-                    <h4 class="text-sm font-medium text-gray-800 mb-2">Intent Parameters</h4>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Branch:</span>
-                            <span class="text-sm font-medium text-blue-600">feature/user-auth</span>
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Jane Smith</p>
+                                <p class="text-sm text-gray-600">QA Engineer</p>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Environment:</span>
-                            <span class="text-sm font-medium text-green-600">staging</span>
+                        <div class="text-right">
+                            <p class="text-lg font-semibold text-green-600">89.7%</p>
+                            <p class="text-sm text-gray-600">Pass Rate</p>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Priority:</span>
-                            <span class="text-sm font-medium text-purple-600">high</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-purple-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Mike Johnson</p>
+                                <p class="text-sm text-gray-600">QA Engineer</p>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Test Type:</span>
-                            <span class="text-sm font-medium text-orange-600">smoke + regression</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Trigger:</span>
-                            <span class="text-sm font-medium text-red-600">manual + CI</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Scope:</span>
-                            <span class="text-sm font-medium text-indigo-600">full suite</span>
+                        <div class="text-right">
+                            <p class="text-lg font-semibold text-green-600">91.3%</p>
+                            <p class="text-sm text-gray-600">Pass Rate</p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Tag/Grep Based Metrics -->
-            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                    <span class="mr-2 text-2xl">🔍</span>
-                    Tag/Grep Based Metrics
-                </h3>
+        <!-- Tab 2: Flaky Test Pattern Detection -->
+        <div id="flaky" class="tab-content">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Flaky Test Pattern Detection</h3>
+                
+                <!-- Flaky Test Statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-exclamation-triangle text-red-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-red-600">Flaky Tests</p>
+                                <p class="text-2xl font-bold text-red-600">23</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-clock text-yellow-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-yellow-600">Intermittent Failures</p>
+                                <p class="text-2xl font-bold text-yellow-600">15</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-chart-line text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-blue-600">Stability Score</p>
+                                <p class="text-2xl font-bold text-blue-600">87.4%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flaky Test List -->
                 <div class="space-y-4">
-                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                        <div>
-                            <span class="text-sm font-medium text-blue-900">Pattern: *test*</span>
-                            <p class="text-xs text-blue-600">Found in test names and descriptions</p>
+                    <h4 class="font-medium text-gray-700">Recent Flaky Tests</h4>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium text-gray-900">Login Authentication Test</p>
+                                <p class="text-sm text-gray-600">File: tests/login.spec.js:45</p>
+                                <p class="text-sm text-red-600">Failed 3 times in last 10 runs</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    High Risk
+                                </span>
+                            </div>
                         </div>
-                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
-                            156 matches
-                        </span>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                        <div>
-                            <span class="text-sm font-medium text-green-900">Grep: "should"</span>
-                            <p class="text-xs text-green-600">Behavioral test assertions</p>
+
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium text-gray-900">Payment Processing Test</p>
+                                <p class="text-sm text-gray-600">File: tests/payment.spec.js:23</p>
+                                <p class="text-sm text-yellow-600">Failed 2 times in last 8 runs</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                    Medium Risk
+                                </span>
+                            </div>
                         </div>
-                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium">
-                            89 matches
-                        </span>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                        <div>
-                            <span class="text-sm font-medium text-purple-900">Tag: @smoke</span>
-                            <p class="text-xs text-purple-600">Smoke test identification</p>
+
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium text-gray-900">User Profile Update Test</p>
+                                <p class="text-sm text-gray-600">File: tests/profile.spec.js:67</p>
+                                <p class="text-sm text-orange-600">Failed 1 time in last 5 runs</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                    Low Risk
+                                </span>
+                            </div>
                         </div>
-                        <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full font-medium">
-                            23 matches
-                        </span>
-                    </div>
-                    <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
-                        <div>
-                            <span class="text-sm font-medium text-orange-900">Pattern: *spec*</span>
-                            <p class="text-xs text-orange-600">Specification-based tests</p>
-                        </div>
-                        <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full font-medium">
-                            67 matches
-                        </span>
                     </div>
                 </div>
 
-                <!-- Advanced Pattern Matching -->
-                <div class="mt-4 p-4 bg-gray-50 rounded-lg">
-                    <h4 class="text-sm font-medium text-gray-800 mb-2">Advanced Pattern Analysis</h4>
-                    <div class="grid grid-cols-2 gap-3 text-xs">
+                <!-- Flaky Test Chart -->
+                <div class="mt-6">
+                    <h4 class="font-medium text-gray-700 mb-4">Flaky Test Trend (Last 30 Days)</h4>
+                    <div class="w-full h-64">
+                        <canvas id="flakyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Test Intent & Purpose -->
+        <div id="intent" class="tab-content">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Test Intent & Purpose</h3>
+                
+                <!-- Intent Parameters Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-undo text-blue-600"></i>
+                        </div>
+                        <p class="text-sm font-medium text-blue-600">Regression</p>
+                        <p class="text-2xl font-bold text-blue-600">45</p>
+                        <p class="text-xs text-blue-500">Tests</p>
+                    </div>
+
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-code text-green-600"></i>
+                        </div>
+                        <p class="text-sm font-medium text-green-600">Development</p>
+                        <p class="text-2xl font-bold text-green-600">23</p>
+                        <p class="text-xs text-green-500">Tests</p>
+                    </div>
+
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 text-center">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-bug text-orange-600"></i>
+                        </div>
+                        <p class="text-sm font-medium text-orange-600">Bugfix</p>
+                        <p class="text-2xl font-bold text-orange-600">12</p>
+                        <p class="text-xs text-orange-500">Tests</p>
+                    </div>
+
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-rocket text-purple-600"></i>
+                        </div>
+                        <p class="text-sm font-medium text-purple-600">Release</p>
+                        <p class="text-2xl font-bold text-purple-600">8</p>
+                        <p class="text-xs text-purple-500">Tests</p>
+                    </div>
+                </div>
+                
+                <!-- Execution Context -->
+                <div class="space-y-3">
+                    <h4 class="font-medium text-gray-700">Execution Context</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
                         <div class="flex justify-between">
-                            <span class="text-gray-600">Regex: /error|fail|exception/</span>
-                            <span class="font-medium text-red-600">34 matches</span>
+                            <span class="text-gray-600">Branch:</span>
+                            <span class="font-medium">feature-payment</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-600">Wildcard: *integration*</span>
-                            <span class="font-medium text-blue-600">42 matches</span>
+                            <span class="text-gray-600">Environment:</span>
+                            <span class="font-medium">staging</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-600">Tag: @critical</span>
-                            <span class="font-medium text-orange-600">15 matches</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Pattern: *e2e*</span>
-                            <span class="font-medium text-green-600">28 matches</span>
+                            <span class="text-gray-600">Build:</span>
+                            <span class="font-medium">#1234</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Flaky Test Patterns -->
-        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 card-hover">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <span class="mr-2 text-2xl">🔄</span>
-                Flaky Test Pattern Detection
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <h4 class="font-medium text-gray-800 mb-3">Intermittent Failures</h4>
-                    <div class="space-y-3">
-                        <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
+        <!-- Tab 4: Tag/Grep Based Metrics -->
+        <div id="tags" class="tab-content">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Tag/Grep Based Metrics</h3>
+                
+                <!-- Tag Distribution -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">Most Used Tags</h4>
+                        <div class="space-y-2">
                             <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-red-800">Login Test</span>
-                                <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full font-medium">
-                                    3 failures
-                                </span>
+                                <span class="text-sm text-gray-600">@smoke</span>
+                                <span class="text-sm font-medium text-gray-900">156 tests</span>
                             </div>
-                            <p class="text-xs text-red-600 mt-2">Fails randomly during peak hours</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">@regression</span>
+                                <span class="text-sm font-medium text-gray-900">89 tests</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">@critical</span>
+                                <span class="text-sm font-medium text-gray-900">67 tests</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">@e2e</span>
+                                <span class="text-sm font-medium text-gray-900">45 tests</span>
+                            </div>
                         </div>
-                        <div class="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                    </div>
+
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">Tag Performance</h4>
+                        <div class="space-y-2">
                             <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-yellow-800">Payment Test</span>
-                                <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-medium">
-                                    2 failures
-                                </span>
+                                <span class="text-sm text-gray-600">@smoke</span>
+                                <span class="text-sm font-medium text-green-600">98.7%</span>
                             </div>
-                            <p class="text-xs text-yellow-600 mt-2">Timeout issues on slow networks</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">@regression</span>
+                                <span class="text-sm font-medium text-green-600">94.2%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">@critical</span>
+                                <span class="text-sm font-medium text-green-600">96.8%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">@e2e</span>
+                                <span class="text-sm font-medium text-green-600">91.3%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Pattern Matching Results -->
                 <div>
-                    <h4 class="font-medium text-gray-800 mb-3">Root Cause Analysis</h4>
+                    <h4 class="font-medium text-gray-700 mb-3">Recent Pattern Matches</h4>
                     <div class="space-y-3">
-                        <div class="p-4 bg-blue-50 rounded-lg">
-                            <p class="text-sm font-medium text-blue-800">Network Latency</p>
-                            <p class="text-xs text-blue-600">High network latency causing timeouts</p>
-                            <div class="mt-2">
-                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
-                                    Recommendation: Increase timeout values
-                                </span>
-                            </div>
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <p class="text-sm font-medium text-gray-900">Pattern: "login.*auth"</p>
+                            <p class="text-sm text-gray-600">Matches: 12 tests</p>
+                            <p class="text-xs text-blue-600">Last matched: 2 hours ago</p>
                         </div>
-                        <div class="p-4 bg-green-50 rounded-lg">
-                            <p class="text-sm font-medium text-green-800">Resource Contention</p>
-                            <p class="text-xs text-green-600">Shared resources causing race conditions</p>
-                            <div class="mt-2">
-                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium">
-                                    Recommendation: Add resource isolation
-                                </span>
-                            </div>
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <p class="text-sm font-medium text-gray-900">Pattern: "payment.*flow"</p>
+                            <p class="text-sm text-gray-600">Matches: 8 tests</p>
+                            <p class="text-xs text-blue-600">Last matched: 1 hour ago</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <p class="text-sm font-medium text-gray-900">Pattern: "user.*profile"</p>
+                            <p class="text-sm text-gray-600">Matches: 15 tests</p>
+                            <p class="text-xs text-blue-600">Last matched: 30 minutes ago</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Recent Results Table -->
-        <div class="bg-white rounded-xl shadow-sm p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold text-gray-900">Recent Test Results</h3>
-                <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Test Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Member</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Project</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Duration</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">User Login Test
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Passed
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">John Doe</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Web App</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2.3s</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-15</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Payment Processing
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                    Failed
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Jane Smith</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">E-commerce</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5.1s</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-15</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">API Validation
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Passed
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mike Johnson</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Backend API</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1.8s</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-15</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- Tab 5: Recent Test Results -->
+        <div id="recent" class="tab-content">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Test Results</h3>
+                
+                <!-- Recent Results Table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team Member</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">Login Authentication Test</div>
+                                    <div class="text-sm text-gray-500">tests/login.spec.js</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Passed
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2.3s</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">John Doe</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2 hours ago</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">Payment Processing Test</div>
+                                    <div class="text-sm text-gray-500">tests/payment.spec.js</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        Failed
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1.8s</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Jane Smith</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1 hour ago</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">User Profile Update Test</div>
+                                    <div class="text-sm text-gray-500">tests/profile.spec.js</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Passed
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3.1s</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mike Johnson</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">30 minutes ago</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <!-- Trace Files & Detailed Test Information -->
-        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                    <span class="mr-2 text-2xl">📁</span>
-                    Trace Files & Detailed Test Information
-                </h3>
-                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-upload mr-2"></i>Upload Trace Files
-                </button>
-            </div>
-
-            <!-- File Upload Section -->
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 mb-6">
-                <div class="text-center">
-                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
-                    <h4 class="text-lg font-medium text-gray-900 mb-2">Upload Test Artifacts</h4>
-                    <p class="text-sm text-gray-600 mb-4">Drag and drop trace files, screenshots, videos, and logs</p>
-                    <div class="flex justify-center space-x-4">
-                        <button class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-200">
-                            <i class="fas fa-file-archive mr-2"></i>Trace Files (.zip)
-                        </button>
-                        <button class="bg-green-100 text-green-700 px-4 py-2 rounded-lg hover:bg-green-200">
-                            <i class="fas fa-image mr-2"></i>Screenshots
-                        </button>
-                        <button class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg hover:bg-purple-200">
-                            <i class="fas fa-video mr-2"></i>Videos
-                        </button>
-                        <button class="bg-orange-100 text-orange-700 px-4 py-2 rounded-lg hover:bg-orange-200">
-                            <i class="fas fa-file-alt mr-2"></i>Logs
+        <!-- Tab 6: Trace Files & Detailed Test Information -->
+        <div id="trace" class="tab-content">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Trace Files & Detailed Test Information</h3>
+                
+                <!-- File Upload Section -->
+                <div class="mb-6">
+                    <h4 class="font-medium text-gray-700 mb-3">Upload Trace Files</h4>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-sm text-gray-600">Drag and drop trace files here, or</p>
+                        <button class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            Browse Files
                         </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Trace File Browser -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Available Trace Files -->
-                <div>
-                    <h4 class="font-medium text-gray-800 mb-3">Available Trace Files</h4>
-                    <div class="space-y-3">
-                        <div class="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
-                            <div class="flex items-center justify-between">
+                <!-- File Browser -->
+                <div class="mb-6">
+                    <h4 class="font-medium text-gray-700 mb-3">Available Trace Files</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-file-archive text-blue-600 mr-3"></i>
                                 <div>
-                                    <p class="text-sm font-medium text-blue-900">Login Test - 2024-01-15</p>
-                                    <p class="text-xs text-blue-600">Trace file, 3 screenshots, video recording</p>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <button class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200">
-                                        <i class="fas fa-eye mr-1"></i>View
-                                    </button>
-                                    <button class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">
-                                        <i class="fas fa-download mr-1"></i>Download
-                                    </button>
+                                    <p class="text-sm font-medium text-gray-900">trace-login-test-2024-01-15.zip</p>
+                                    <p class="text-xs text-gray-500">Size: 2.4 MB | Uploaded: 2 hours ago</p>
                                 </div>
                             </div>
+                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">View</button>
                         </div>
-                        <div class="p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
-                            <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-file-archive text-blue-600 mr-3"></i>
                                 <div>
-                                    <p class="text-sm font-medium text-red-900">Payment Test - 2024-01-15</p>
-                                    <p class="text-xs text-red-600">Trace file, 5 screenshots, error logs</p>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <button class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
-                                        <i class="fas fa-eye mr-1"></i>View
-                                    </button>
-                                    <button class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">
-                                        <i class="fas fa-download mr-1"></i>Download
-                                    </button>
+                                    <p class="text-sm font-medium text-gray-900">trace-payment-test-2024-01-15.zip</p>
+                                    <p class="text-xs text-gray-500">Size: 1.8 MB | Uploaded: 1 hour ago</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-400">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm font-medium text-green-900">API Test - 2024-01-15</p>
-                                    <p class="text-xs text-green-600">Trace file, 2 screenshots, performance logs</p>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <button class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">
-                                        <i class="fas fa-eye mr-1"></i>View
-                                    </button>
-                                    <button class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">
-                                        <i class="fas fa-download mr-1"></i>Download
-                                    </button>
-                                </div>
-                            </div>
+                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">View</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Detailed Test Analysis -->
-                <div>
-                    <h4 class="font-medium text-gray-800 mb-3">Detailed Test Analysis</h4>
-                    <div class="space-y-3">
-                        <div class="p-3 bg-gray-50 rounded-lg">
-                            <p class="text-sm font-medium text-gray-800">Test Execution Timeline</p>
-                            <div class="mt-2 space-y-1">
-                                <div class="flex justify-between text-xs">
-                                    <span class="text-gray-600">Setup:</span>
-                                    <span class="font-medium">0.5s</span>
-                                </div>
-                                <div class="flex justify-between text-xs">
-                                    <span class="text-gray-600">Navigation:</span>
+                <!-- Detailed Analysis -->
+                <div class="mb-6">
+                    <h4 class="font-medium text-gray-700 mb-3">Detailed Analysis</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h5 class="font-medium text-gray-900 mb-2">Timeline Analysis</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Page Load:</span>
                                     <span class="font-medium">1.2s</span>
                                 </div>
-                                <div class="flex justify-between text-xs">
-                                    <span class="text-gray-600">Interaction:</span>
-                                    <span class="font-medium">0.8s</span>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">API Calls:</span>
+                                    <span class="font-medium">3 calls</span>
                                 </div>
-                                <div class="flex justify-between text-xs">
-                                    <span class="text-gray-600">Assertion:</span>
-                                    <span class="font-medium">0.3s</span>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Total Duration:</span>
+                                    <span class="font-medium">2.3s</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-3 bg-gray-50 rounded-lg">
-                            <p class="text-sm font-medium text-gray-800">Resource Usage</p>
-                            <div class="mt-2 space-y-1">
-                                <div class="flex justify-between text-xs">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h5 class="font-medium text-gray-900 mb-2">Resource Usage</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
                                     <span class="text-gray-600">Memory:</span>
                                     <span class="font-medium">45.2 MB</span>
                                 </div>
-                                <div class="flex justify-between text-xs">
+                                <div class="flex justify-between">
                                     <span class="text-gray-600">CPU:</span>
-                                    <span class="font-medium">12%</span>
+                                    <span class="font-medium">12.3%</span>
                                 </div>
-                                <div class="flex justify-between text-xs">
+                                <div class="flex justify-between">
                                     <span class="text-gray-600">Network:</span>
                                     <span class="font-medium">2.1 MB</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-3 bg-gray-50 rounded-lg">
-                            <p class="text-sm font-medium text-gray-800">Error Details</p>
-                            <div class="mt-2">
-                                <p class="text-xs text-red-600">Element not found: #login-button</p>
-                                <p class="text-xs text-gray-600 mt-1">Timeout after 30 seconds</p>
-                                <p class="text-xs text-gray-600">Screenshot captured at failure</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Trace Viewer Preview -->
-            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
-                <h4 class="font-medium text-gray-800 mb-3">Trace Viewer Preview</h4>
-                <div class="bg-white rounded-lg p-4 border">
-                    <div class="flex items-center space-x-4 mb-4">
-                        <button class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded">Timeline</button>
-                        <button class="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded">Network</button>
-                        <button class="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded">Console</button>
-                        <button class="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded">Sources</button>
-                    </div>
-                    <div class="h-32 bg-gray-100 rounded flex items-center justify-center">
-                        <p class="text-gray-500 text-sm">Trace Viewer Interface</p>
-                        <p class="text-gray-400 text-xs">Interactive timeline, network calls, console logs</p>
+                <!-- Trace Viewer Preview -->
+                <div>
+                    <h4 class="font-medium text-gray-700 mb-3">Trace Viewer Preview</h4>
+                    <div class="bg-gray-900 rounded-lg p-4 text-white font-mono text-sm">
+                        <div class="mb-2">
+                            <span class="text-green-400">✓</span>
+                            <span class="text-gray-300">Page loaded successfully</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="text-blue-400">→</span>
+                            <span class="text-gray-300">API call: POST /api/login</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="text-green-400">✓</span>
+                            <span class="text-gray-300">Authentication successful</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="text-blue-400">→</span>
+                            <span class="text-gray-300">Navigation: /dashboard</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="text-green-400">✓</span>
+                            <span class="text-gray-300">Test completed</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -579,86 +648,119 @@
     </main>
 
     <script>
-        // Status Distribution Chart
-        const statusCtx = document.getElementById('statusChart').getContext('2d');
-        new Chart(statusCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Passed', 'Failed', 'Skipped', 'Blocked'],
-                datasets: [{
-                    data: [1087, 158, 2, 0],
-                    backgroundColor: ['#10B981', '#EF4444', '#F59E0B', '#6B7280'],
-                    borderWidth: 2,
-                    borderColor: '#ffffff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function (context) {
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = ((context.parsed / total) * 100).toFixed(1);
-                                return `${context.label}: ${context.parsed} (${percentage}%)`;
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active', 'border-blue-600', 'text-blue-600');
+                button.classList.add('border-transparent', 'text-gray-500');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Activate selected tab button
+            event.target.classList.add('active', 'border-blue-600', 'text-blue-600');
+            event.target.classList.remove('border-transparent', 'text-gray-500');
+        }
+
+        // Initialize charts when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Results Distribution Chart
+            const resultsCtx = document.getElementById('resultsChart').getContext('2d');
+            new Chart(resultsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped'],
+                    datasets: [{
+                        data: [87.3, 12.7, 0],
+                        backgroundColor: ['#10B981', '#EF4444', '#6B7280'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
-
-        // Daily Trends Chart
-        const trendCtx = document.getElementById('trendChart').getContext('2d');
-        new Chart(trendCtx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Tests Executed',
-                    data: [65, 78, 90, 81, 56, 55, 40],
-                    borderColor: '#3B82F6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Add some interactivity
-        document.addEventListener('DOMContentLoaded', function () {
-            // Animate health bars on scroll
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.width = entry.target.getAttribute('data-width');
-                    }
-                });
             });
 
-            document.querySelectorAll('.health-bar').forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0%';
-                bar.setAttribute('data-width', width);
-                observer.observe(bar);
+            // Performance Trend Chart
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Pass Rate %',
+                        data: [85, 87, 89, 86, 88, 90, 87.3],
+                        borderColor: '#2563EB',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Flaky Test Chart
+            const flakyCtx = document.getElementById('flakyChart').getContext('2d');
+            new Chart(flakyCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Flaky Tests',
+                        data: [18, 22, 19, 23],
+                        backgroundColor: '#EF4444',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
             });
         });
     </script>
