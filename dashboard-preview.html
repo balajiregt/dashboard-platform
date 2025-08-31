@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Team Dashboard - Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .health-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        .card-hover {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-chart-line text-white text-sm"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-900">QA Team Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-sync-alt mr-2"></i>Refresh
+                    </button>
+                    <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-gray-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Title -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Team Performance Overview</h2>
+            <p class="text-gray-600">Real-time insights into your QA team's test execution and quality metrics</p>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-chart-bar text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Tests</p>
+                        <p class="text-2xl font-bold text-gray-900">1,247</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Pass Rate</p>
+                        <p class="text-2xl font-bold text-green-600">87.3%</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-times-circle text-red-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Fail Rate</p>
+                        <p class="text-2xl font-bold text-red-600">12.7%</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-heartbeat text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Suite Health</p>
+                        <p class="text-2xl font-bold text-purple-600">82.1%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Status Distribution -->
+            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Test Status Distribution</h3>
+                <div class="h-64">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Daily Trends -->
+            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Daily Test Execution Trends</h3>
+                <div class="h-64">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Features Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Intent Capturing -->
+            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2 text-2xl">🎯</span>
+                    Test Intent & Purpose
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                        <div>
+                            <p class="font-medium text-blue-900">Login Functionality</p>
+                            <p class="text-sm text-blue-700">Validates user authentication flow</p>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
+                            Auth Tests
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                        <div>
+                            <p class="font-medium text-green-900">Payment Processing</p>
+                            <p class="text-sm text-green-700">Ensures secure transaction handling</p>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
+                            E2E Tests
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                        <div>
+                            <p class="font-medium text-purple-900">API Endpoints</p>
+                            <p class="text-sm text-purple-700">Validates backend service contracts</p>
+                        </div>
+                        <span class="text-xs bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium">
+                            API Tests
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suite Health Monitoring -->
+            <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2 text-2xl">🏥</span>
+                    Suite Health Status
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-700">E2E Test Suite</span>
+                        <div class="flex items-center">
+                            <div class="w-20 bg-gray-200 rounded-full h-3 mr-3">
+                                <div class="bg-green-500 h-3 rounded-full health-bar" style="width: 85%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-green-600">85%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-700">Unit Test Suite</span>
+                        <div class="flex items-center">
+                            <div class="w-20 bg-gray-200 rounded-full h-3 mr-3">
+                                <div class="bg-green-500 h-3 rounded-full health-bar" style="width: 92%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-green-600">92%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-700">API Test Suite</span>
+                        <div class="flex items-center">
+                            <div class="w-20 bg-gray-200 rounded-full h-3 mr-3">
+                                <div class="bg-yellow-500 h-3 rounded-full health-bar" style="width: 78%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-yellow-600">78%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-700">Performance Tests</span>
+                        <div class="flex items-center">
+                            <div class="w-20 bg-gray-200 rounded-full h-3 mr-3">
+                                <div class="bg-red-500 h-3 rounded-full health-bar" style="width: 65%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-red-600">65%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flaky Test Patterns -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 card-hover">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <span class="mr-2 text-2xl">🔄</span>
+                Flaky Test Pattern Detection
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-3">Intermittent Failures</h4>
+                    <div class="space-y-3">
+                        <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-red-800">Login Test</span>
+                                <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full font-medium">
+                                    3 failures
+                                </span>
+                            </div>
+                            <p class="text-xs text-red-600 mt-2">Fails randomly during peak hours</p>
+                        </div>
+                        <div class="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-yellow-800">Payment Test</span>
+                                <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-medium">
+                                    2 failures
+                                </span>
+                            </div>
+                            <p class="text-xs text-yellow-600 mt-2">Timeout issues on slow networks</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-3">Root Cause Analysis</h4>
+                    <div class="space-y-3">
+                        <div class="p-4 bg-blue-50 rounded-lg">
+                            <p class="text-sm font-medium text-blue-800">Network Latency</p>
+                            <p class="text-xs text-blue-600">High network latency causing timeouts</p>
+                            <div class="mt-2">
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+                                    Recommendation: Increase timeout values
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-green-50 rounded-lg">
+                            <p class="text-sm font-medium text-green-800">Resource Contention</p>
+                            <p class="text-xs text-green-600">Shared resources causing race conditions</p>
+                            <div class="mt-2">
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium">
+                                    Recommendation: Add resource isolation
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Results Table -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">Recent Test Results</h3>
+                <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">User Login Test</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Passed
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">John Doe</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Web App</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2.3s</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-15</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Payment Processing</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    Failed
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Jane Smith</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">E-commerce</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5.1s</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-15</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">API Validation</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Passed
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mike Johnson</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Backend API</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1.8s</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-15</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Status Distribution Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Passed', 'Failed', 'Skipped', 'Blocked'],
+                datasets: [{
+                    data: [1087, 158, 2, 0],
+                    backgroundColor: ['#10B981', '#EF4444', '#F59E0B', '#6B7280'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return `${context.label}: ${context.parsed} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Daily Trends Chart
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Tests Executed',
+                    data: [65, 78, 90, 81, 56, 55, 40],
+                    borderColor: '#3B82F6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate health bars on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.width = entry.target.getAttribute('data-width');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.health-bar').forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                bar.setAttribute('data-width', width);
+                observer.observe(bar);
+            });
+        });
+    </script>
+</body>
+</html>
