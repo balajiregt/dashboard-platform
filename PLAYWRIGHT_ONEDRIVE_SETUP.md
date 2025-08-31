@@ -18,7 +18,23 @@ This guide shows you how to configure your existing Playwright test project to a
 - **No server dependency** - Cloud-based storage
 - **Professional reliability** - Enterprise-grade infrastructure
 
+### **✅ Test Intent & Parameter Capture**
+- **Test Intent Methods** - Multiple ways to capture test purpose
+- **Parameter Implementation** - Enhanced reporter with intent data
+- **Dashboard Analytics** - Real-time intent pattern analysis
+- **Team Collaboration** - Shared understanding of test context
+
 ## 🚀 **Step-by-Step Setup**
+
+**Complete Setup in 5 Simple Steps:**
+
+1. **Install Dependencies** - Add required packages
+2. **Create Reporter** - Build custom OneDrive reporter
+3. **Configure Playwright** - Update config file
+4. **Set Environment** - Configure Azure credentials
+5. **Test Integration** - Verify everything works
+
+---
 
 ### **Step 1: Install Required Dependencies**
 
@@ -163,7 +179,7 @@ module.exports = {
 };
 ```
 
-### **Step 4: Environment Configuration**
+### **Step 4: Environment Configuration (Final Step)**
 
 Create a `.env` file in your Playwright project root:
 
@@ -191,33 +207,9 @@ ONEDRIVE_FOLDER=QA Dashboard
 - **`PROJECT_NAME`** - Your project name for categorization
 - **`TEST_ENV`** - Test environment (dev, staging, prod)
 
-### **Step 5: Update Package.json Scripts**
+### **Step 5: Test the Integration**
 
-Add these scripts to your `package.json`:
-
-```json
-{
-  "scripts": {
-    "test": "playwright test",
-    "test:onedrive": "playwright test --reporter=onedrive-reporter",
-    "test:with-traces": "playwright test --trace on",
-    "test:upload-all": "playwright test --reporter=onedrive-reporter --trace on --screenshot on --video on",
-    "test:smoke:onedrive": "playwright test --grep @smoke --reporter=onedrive-reporter",
-    "test:regression:onedrive": "playwright test --grep @regression --reporter=onedrive-reporter"
-  }
-}
-```
-
-**Script Explanations:**
-- **`test:onedrive`** - Run tests with OneDrive upload
-- **`test:with-traces`** - Run tests with trace file generation
-- **`test:upload-all`** - Run tests with all artifacts and upload
-- **`test:smoke:onedrive`** - Run smoke tests with OneDrive upload
-- **`test:regression:onedrive`** - Run regression tests with OneDrive upload
-
-## 🧪 **Testing the Integration**
-
-### **Run Your First Test with OneDrive Upload**
+#### **Run Your First Test with OneDrive Upload**
 
 ```bash
 # Test the integration with a simple test
@@ -232,6 +224,319 @@ npx playwright test --grep "Login" --reporter=onedrive-reporter
 1. **Check console output** for upload confirmation messages
 2. **Verify in OneDrive** - Check "QA Dashboard" folder
 3. **Check dashboard** - Results should appear immediately
+
+## 🎯 **Test Intent Capture Methods & Parameter Implementation**
+
+### **1. Test Intent Capture Methods**
+
+The setup captures test intents through multiple approaches:
+
+#### **A. Playwright Tags & Annotations**
+```javascript
+// In your Playwright test files
+test('Login functionality', { tag: ['@smoke', '@authentication', '@critical'] }, async ({ page }) => {
+    // Test implementation
+});
+
+test.describe('Payment Flow', () => {
+    test('Credit card payment', { tag: ['@regression', '@payment', '@e2e'] }, async ({ page }) => {
+        // Test implementation
+    });
+});
+```
+
+#### **B. Environment Variables for Execution Context**
+```bash
+# .env file in your Playwright project
+TEST_INTENT=regression          # Purpose of test run
+TEST_SCOPE=critical            # Scope of testing
+TEST_PRIORITY=high            # Priority level
+TEST_TYPE=automated           # Type of testing
+TEST_TRIGGER=scheduled        # What triggered the run
+BRANCH_NAME=feature-payment   # Git branch being tested
+```
+
+#### **C. Test Metadata in Reporter**
+The OneDrive reporter automatically captures:
+- **Test file location** and line numbers
+- **Browser and device information**
+- **Execution environment** (dev/staging/prod)
+- **Team member** running the tests
+- **Project context** and categorization
+
+### **2. Parameter Capture Implementation**
+
+#### **Enhanced Reporter with Intent Data**
+```javascript
+// Enhanced onedrive-reporter.js
+class OneDriveReporter {
+    async onTestEnd(test, result) {
+        if (!this.graphClient) await this.initialize();
+
+        // Enhanced test data with intents and parameters
+        const testData = {
+            test_name: test.title,
+            status: result.status,
+            execution_time: result.duration,
+            framework: 'Playwright',
+            team_member_name: process.env.QA_TEAM_MEMBER || 'Unknown',
+            project_name: process.env.PROJECT_NAME || 'Playwright Tests',
+            environment: process.env.TEST_ENV || 'development',
+            created_at: new Date().toISOString(),
+            
+            // 🎯 INTENT CAPTURE
+            test_intent: {
+                purpose: process.env.TEST_INTENT || 'development',  // regression, development, bugfix, release
+                scope: process.env.TEST_SCOPE || 'functional',     // critical, high, medium, low
+                priority: process.env.TEST_PRIORITY || 'normal',   // high, medium, low
+                type: process.env.TEST_TYPE || 'automated',        // automated, manual, exploratory
+                trigger: process.env.TEST_TRIGGER || 'manual'      // scheduled, manual, ci/cd, hotfix
+            },
+            
+            // 🚀 EXECUTION CONTEXT
+            execution_context: {
+                branch: process.env.BRANCH_NAME || 'main',
+                environment: process.env.TEST_ENV || 'development',
+                build_number: process.env.BUILD_NUMBER || 'local',
+                commit_hash: process.env.COMMIT_HASH || 'local',
+                test_suite: test.parent.title || 'Default Suite'
+            },
+            
+            // 🏷️ TEST TAGS & ANNOTATIONS
+            tags: test.tags || [],
+            annotations: test.annotations || [],
+            
+            // 📊 METADATA
+            metadata: {
+                browser: test.parent.project.name,
+                device: test.parent.project.use.deviceName || 'Desktop',
+                file: test.location.file,
+                line: test.location.line,
+                retry_count: result.retry || 0,
+                parallel_index: test.parallelIndex || 0
+            }
+        };
+
+        // Upload enhanced test data
+        await this.uploadToOneDrive(testData, result);
+    }
+}
+```
+
+### **3. Real-World Usage Examples**
+
+#### **Example 1: Regression Testing**
+```bash
+# Set environment variables for regression testing
+export TEST_INTENT=regression
+export TEST_SCOPE=critical
+export TEST_PRIORITY=high
+export TEST_TRIGGER=scheduled
+export BRANCH_NAME=main
+export TEST_ENV=staging
+
+# Run tests with OneDrive upload
+npx playwright test --reporter=onedrive-reporter
+```
+
+#### **Example 2: Feature Development Testing**
+```bash
+# Set environment variables for feature testing
+export TEST_INTENT=development
+export TEST_SCOPE=functional
+export TEST_PRIORITY=medium
+export TEST_TRIGGER=manual
+export BRANCH_NAME=feature-login
+export TEST_ENV=development
+
+# Run tests with OneDrive upload
+npx playwright test --reporter=onedrive-reporter
+```
+
+#### **Example 3: Bugfix Verification**
+```bash
+# Set environment variables for bugfix testing
+export TEST_INTENT=bugfix
+export TEST_SCOPE=critical
+export TEST_PRIORITY=high
+export TEST_TRIGGER=hotfix
+export BRANCH_NAME=hotfix-login-issue
+export TEST_ENV=staging
+
+# Run tests with OneDrive upload
+npx playwright test --reporter=onedrive-reporter
+```
+
+### **4. Dashboard Display of Intents & Parameters**
+
+The dashboard shows this captured data in organized sections:
+
+#### **A. Test Intent & Purpose Section**
+```javascript
+// In TeamDashboard.js
+const TestIntentSection = () => {
+    return (
+        <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold mb-4">Test Intent & Purpose</h3>
+            
+            {/* Intent Parameters Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <IntentMetric 
+                    label="Purpose" 
+                    value="Regression" 
+                    count={45} 
+                    color="blue" 
+                />
+                <IntentMetric 
+                    label="Development" 
+                    value="Feature Testing" 
+                    count={23} 
+                    color="green" 
+                />
+                <IntentMetric 
+                    label="Bugfix" 
+                    value="Issue Verification" 
+                    count={12} 
+                    color="orange" 
+                />
+                <IntentMetric 
+                    label="Release" 
+                    value="Pre-deployment" 
+                    count={8} 
+                    color="purple" 
+                />
+            </div>
+            
+            {/* Execution Context */}
+            <div className="space-y-3">
+                <h4 className="font-medium text-gray-700">Execution Context</h4>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+                    <div className="flex justify-between">
+                        <span className="text-gray-600">Branch:</span>
+                        <span className="font-medium">feature-payment</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className="text-gray-600">Environment:</span>
+                        <span className="font-medium">staging</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className="text-gray-600">Build:</span>
+                        <span className="font-medium">#1234</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+```
+
+### **5. Advanced Intent Capture Features**
+
+#### **A. Dynamic Intent Detection**
+```javascript
+// Enhanced reporter with dynamic intent detection
+async detectTestIntent(test, result) {
+    const intent = {
+        purpose: 'development',
+        scope: 'functional',
+        priority: 'normal'
+    };
+    
+    // Detect purpose from test tags
+    if (test.tags.includes('@regression')) intent.purpose = 'regression';
+    if (test.tags.includes('@bugfix')) intent.purpose = 'bugfix';
+    if (test.tags.includes('@release')) intent.purpose = 'release';
+    
+    // Detect scope from test tags
+    if (test.tags.includes('@critical')) intent.scope = 'critical';
+    if (test.tags.includes('@high')) intent.scope = 'high';
+    if (test.tags.includes('@low')) intent.scope = 'low';
+    
+    // Detect priority from test annotations
+    if (test.annotations.priority) intent.priority = test.annotations.priority;
+    
+    return intent;
+}
+```
+
+#### **B. CI/CD Integration**
+```yaml
+# GitHub Actions example
+- name: Run Playwright Tests
+  env:
+    TEST_INTENT: ${{ github.event_name == 'push' && 'regression' || 'development' }}
+    TEST_SCOPE: ${{ contains(github.event.head_commit.message, '[critical]') && 'critical' || 'functional' }}
+    TEST_PRIORITY: ${{ contains(github.event.head_commit.message, '[high]') && 'high' || 'normal' }}
+    TEST_TRIGGER: ${{ github.event_name }}
+    BRANCH_NAME: ${{ github.ref_name }}
+    BUILD_NUMBER: ${{ github.run_number }}
+    COMMIT_HASH: ${{ github.sha }}
+  run: npx playwright test --reporter=onedrive-reporter
+```
+
+#### **C. Package.json Scripts with Environment (Recommended)**
+
+Create standardized scripts in your `package.json` for different test scenarios:
+
+```json
+{
+  "scripts": {
+    "test": "playwright test",
+    "test:regression": "cross-env TEST_INTENT=regression TEST_SCOPE=critical TEST_PRIORITY=high TEST_TRIGGER=scheduled TEST_ENV=staging npx playwright test --reporter=onedrive-reporter",
+    "test:feature": "cross-env TEST_INTENT=development TEST_SCOPE=functional TEST_PRIORITY=medium TEST_TRIGGER=manual TEST_ENV=development npx playwright test --reporter=onedrive-reporter",
+    "test:bugfix": "cross-env TEST_INTENT=bugfix TEST_SCOPE=critical TEST_PRIORITY=high TEST_TRIGGER=hotfix TEST_ENV=staging npx playwright test --reporter=onedrive-reporter",
+    "test:smoke": "cross-env TEST_INTENT=regression TEST_SCOPE=critical TEST_PRIORITY=high TEST_TRIGGER=scheduled TEST_ENV=staging npx playwright test --grep @smoke --reporter=onedrive-reporter",
+    "test:e2e": "cross-env TEST_INTENT=regression TEST_SCOPE=critical TEST_PRIORITY=high TEST_TRIGGER=scheduled TEST_ENV=staging npx playwright test --grep @e2e --reporter=onedrive-reporter",
+    "test:critical": "cross-env TEST_INTENT=regression TEST_SCOPE=critical TEST_PRIORITY=high TEST_TRIGGER=manual TEST_ENV=staging npx playwright test --grep @critical --reporter=onedrive-reporter"
+  }
+}
+```
+
+**Install cross-env for cross-platform compatibility:**
+```bash
+npm install --save-dev cross-env
+```
+
+**Usage Examples:**
+```bash
+# Run regression tests
+npm run test:regression
+
+# Run feature development tests
+npm run test:feature
+
+# Run bugfix verification tests
+npm run test:bugfix
+
+# Run smoke tests only
+npm run test:smoke
+
+# Run end-to-end tests
+npm run test:e2e
+
+# Run critical tests only
+npm run test:critical
+```
+
+**Benefits:**
+✅ **No manual export commands needed**
+✅ **Consistent environment variables every time**
+✅ **Easy to remember and use**
+✅ **Team standardization**
+✅ **Cross-platform compatibility**
+✅ **Quick switching between test types**
+
+### **6. Dashboard Analytics on Intents**
+
+The dashboard provides insights like:
+
+- **Intent Distribution**: What percentage of tests are regression vs development
+- **Scope Analysis**: Critical vs functional test distribution
+- **Priority Trends**: High priority test patterns over time
+- **Trigger Analysis**: What's driving test execution
+- **Branch Correlation**: Which branches have most test activity
+
+---
 
 ## 📁 **Data Structure in OneDrive**
 
@@ -265,47 +570,6 @@ OneDrive/
     "file": "tests/login.spec.js",
     "line": 15
   }
-}
-```
-
-## 🔧 **Advanced Configuration**
-
-### **Custom OneDrive Folder Structure**
-
-Modify the reporter to create organized folder structures:
-
-```javascript
-// In onedrive-reporter.js
-async uploadToOneDrive(testData, result) {
-    const dateFolder = new Date().toISOString().split('T')[0];
-    const projectFolder = testData.project_name.replace(/\s+/g, '-');
-    const basePath = `QA Dashboard/${projectFolder}/${dateFolder}`;
-    
-    // Create organized folder structure
-    const fileName = `test-result-${Date.now()}-${testData.test_name.replace(/\s+/g, '-')}.json`;
-    const filePath = `${basePath}/${fileName}`;
-    
-    // Upload to organized structure
-    await this.graphClient.api(`/me/drive/root:/${filePath}:/content`)
-        .put(JSON.stringify(testData, null, 2));
-}
-```
-
-### **Batch Upload for Multiple Tests**
-
-For better performance with large test suites:
-
-```javascript
-async onEnd(result) {
-    if (!this.graphClient) await this.initialize();
-    
-    // Batch upload all test results
-    const uploadPromises = result.tests.map(test => 
-        this.uploadToOneDrive(test.data, test.result)
-    );
-    
-    await Promise.all(uploadPromises);
-    console.log(`✅ Uploaded ${result.tests.length} test results to OneDrive`);
 }
 ```
 
@@ -399,12 +663,28 @@ Test Execution    Upload Results   Cloud Storage  Team View
 4. **Set environment variables** with your Azure credentials
 5. **Test the integration** with a simple test run
 
-### **Advanced Features**
-1. **Custom folder structures** for better organization
-2. **Batch upload** for performance optimization
-3. **Error handling** and retry mechanisms
-4. **Integration with CI/CD** pipelines
-5. **Custom metadata** for enhanced analysis
+### **Recommended Daily Workflow**
+Use Strategy 4 (Package.json Scripts) for consistent test execution:
+
+```bash
+# Morning: Quick smoke test
+npm run test:smoke
+
+# Development: Feature testing
+npm run test:feature
+
+# Bugfix: Issue verification
+npm run test:bugfix
+
+# End of day: Full regression
+npm run test:regression
+```
+
+### **Ready to Use**
+Once you complete the 5 steps above, you can run tests with:
+```bash
+npx playwright test --reporter=onedrive-reporter
+```
 
 ## 🆘 **Support & Resources**
 
