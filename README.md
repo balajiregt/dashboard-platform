@@ -4,14 +4,6 @@ A comprehensive, centralized platform that consolidates test results from all QA
 
 ## 🎯 **What This Platform Solves**
 
-### **Before (Individual Results)**
-- ❌ Each QA engineer has their own test results
-- ❌ No team-wide visibility or collaboration
-- ❌ Difficult to track overall project quality
-- ❌ Scattered test reports across different systems
-- ❌ No centralized analytics or reporting
-- ❌ **Single point of failure** - server hosted on team leader's machine
-
 ### **After (Centralized Platform)**
 - ✅ **Single source of truth** for all QA results
 - ✅ **Team-wide visibility** and collaboration
@@ -113,11 +105,13 @@ chmod +x start-team-server.sh
 - Navigation to detailed views
 
 ### **👥 Team Dashboard** *(Main Feature)*
-- **Consolidated Results**: All team member results in one view
-- **Performance Metrics**: Success rates, execution times, trends
+- **🎯 Intent Capturing**: Test purpose and business logic mapping
+- **📊 Pass/Fail Analytics**: Real-time success rates and trends
+- **🏥 Suite Health Monitoring**: Test suite vitality and performance
+- **🔄 Flaky Test Detection**: Pattern recognition and root cause analysis
 - **Real-time Updates**: Live data refresh every 30 seconds
 - **Advanced Filtering**: Date, project, member, status filters
-- **Visual Analytics**: Charts and graphs for insights
+- **Visual Analytics**: Interactive charts for insights
 
 ### **📊 Advanced Analytics Dashboard**
 - Detailed performance analysis
@@ -129,6 +123,32 @@ chmod +x start-team-server.sh
 - Individual test result details
 - Screenshots and videos
 - Error logs and stack traces
+
+## 🎯 **Core Dashboard Features**
+
+### **1. 🎯 Intent Capturing of Tests**
+- **Test Purpose Analysis**: Understand why each test exists and what it validates
+- **Business Logic Mapping**: Connect tests to specific business requirements
+- **Test Coverage Intent**: Track what functionality each test suite covers
+- **Requirement Traceability**: Link tests back to user stories and specifications
+
+### **2. 📊 Total Pass and Fail Percentage**
+- **Real-time Success Rates**: Live updates of test execution results
+- **Trend Analysis**: Track pass/fail percentages over time
+- **Team Performance Metrics**: Compare success rates across team members
+- **Project Health Indicators**: Overall quality metrics for each project
+
+### **3. 🏥 Suite Health Monitoring**
+- **Test Suite Vitality**: Overall health score for each test suite
+- **Execution Time Trends**: Monitor performance degradation
+- **Resource Utilization**: Track CPU, memory, and execution efficiency
+- **Health Alerts**: Proactive notifications for failing suites
+
+### **4. 🔄 Flaky Test Pattern Detection**
+- **Intermittent Failure Analysis**: Identify tests that fail inconsistently
+- **Pattern Recognition**: Detect environmental and timing-related issues
+- **Root Cause Analysis**: Understand why tests are flaky
+- **Stabilization Recommendations**: Suggest fixes for flaky tests
 
 ## ☁️ **Cloud Storage Architecture**
 
