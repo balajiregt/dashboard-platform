@@ -63,7 +63,51 @@ npm install googleapis
 
 ## 🚀 **Option 2: OneDrive Integration**
 
-### **Step 1: Register Azure Application**
+### **Option A: Reuse Existing Azure Entra ID App (Recommended)**
+
+If you already have an Azure application for Playwright testing, you can **reuse it** for the dashboard:
+
+#### **✅ What You Can Reuse:**
+- **Tenant ID** - Same Azure tenant
+- **Client ID** - Same application registration  
+- **Client Secret** - Same secret (if not expired)
+- **API Permissions** - Add Microsoft Graph if needed
+
+#### **🔧 Steps to Reuse:**
+
+1. **Check Existing App Permissions:**
+   - Go to [Azure Portal](https://portal.azure.com/)
+   - Navigate to "Azure Active Directory" > "App registrations"
+   - Find your existing Playwright app
+   - Check "API permissions" - ensure it has Microsoft Graph permissions
+
+2. **Add Required Permissions (if missing):**
+   - Click "Add a permission"
+   - Select "Microsoft Graph"
+   - Choose "Delegated permissions"
+   - Add: `Files.ReadWrite`, `User.Read`
+
+3. **Add Redirect URIs:**
+   - Go to "Authentication"
+   - Add these redirect URIs:
+     - `http://localhost:3000/auth/callback`
+     - `http://localhost:3001/auth/callback`
+     - Your production dashboard URLs
+
+4. **Use Existing Credentials:**
+```bash
+# Add to your .env file using existing values
+ONEDRIVE_TENANT_ID=your_existing_tenant_id
+ONEDRIVE_CLIENT_ID=your_existing_client_id
+ONEDRIVE_CLIENT_SECRET=your_existing_secret
+STORAGE_PROVIDER=onedrive
+```
+
+### **Option B: Create New Azure Application**
+
+Only if you prefer complete separation or existing app lacks required permissions:
+
+#### **Step 1: Register New Azure Application**
 
 1. **Go to [Azure Portal](https://portal.azure.com/)**
 2. **Navigate to "Azure Active Directory" > "App registrations"**
@@ -73,7 +117,7 @@ npm install googleapis
    - Supported account types: "Accounts in this organizational directory only"
    - Redirect URI: Leave blank for now
 
-### **Step 2: Get Application Credentials**
+#### **Step 2: Get Application Credentials**
 
 1. **Note down the Application (client) ID**
 2. **Note down the Directory (tenant) ID**
@@ -81,7 +125,7 @@ npm install googleapis
 4. **Create a new client secret**
 5. **Note down the client secret value**
 
-### **Step 3: Configure Environment**
+#### **Step 3: Configure Environment**
 
 ```bash
 # Add to your .env file
@@ -97,6 +141,40 @@ STORAGE_PROVIDER=onedrive
 cd backend
 npm install @microsoft/microsoft-graph-client @azure/identity
 ```
+
+## 🔒 **Security & Impact Analysis**
+
+### **✅ Reusing Existing App - NO Negative Impact:**
+
+#### **What WON'T Be Affected:**
+- **Your existing Playwright tests** - Continue working exactly as before
+- **Current permissions** - All existing functionality preserved
+- **User access** - Same users, same access levels
+- **API quotas** - Shared across both use cases
+
+#### **What WILL Be Enhanced:**
+- **Additional permissions** - Microsoft Graph for OneDrive access
+- **New redirect URIs** - Dashboard authentication endpoints
+- **Extended functionality** - Dashboard can now store test results
+
+#### **Security Benefits:**
+- **Centralized management** - One app to monitor and maintain
+- **Consistent policies** - Same security model across tools
+- **Easier compliance** - Single audit trail for both systems
+
+### **⚠️ Important Considerations:**
+
+1. **Client Secret Expiry:**
+   - Check if your existing secret is still valid
+   - If expired, create a new one and update both systems
+
+2. **Permission Scope:**
+   - Ensure the app has minimal required permissions
+   - Only add what's needed for dashboard functionality
+
+3. **User Consent:**
+   - Users may need to re-consent if new permissions are added
+   - This is a one-time process and won't affect existing functionality
 
 ## 🚀 **Option 3: Local Storage (Fallback)**
 
