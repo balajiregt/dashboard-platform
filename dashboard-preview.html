@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,15 +12,18 @@
         .health-bar {
             transition: width 0.5s ease-in-out;
         }
+
         .card-hover {
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
+
         .card-hover:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
+
 <body class="bg-gray-50 min-h-screen">
     <!-- Header -->
     <header class="bg-white shadow-sm border-b">
@@ -132,75 +136,149 @@
                 <div class="space-y-4">
                     <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
                         <div>
-                            <p class="font-medium text-blue-900">Login Functionality</p>
-                            <p class="text-sm text-blue-700">Validates user authentication flow</p>
+                            <p class="font-medium text-blue-900">Intent: Regression</p>
+                            <p class="text-sm text-blue-700">Purpose: Ensure new changes don't break existing
+                                functionality</p>
+                            <p class="text-xs text-blue-600 mt-1">Executed: 45 times | Last: 2 hours ago</p>
                         </div>
                         <span class="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
-                            Auth Tests
+                            Regression
                         </span>
                     </div>
-                    <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                    <div
+                        class="flex items-center justify-between p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
                         <div>
-                            <p class="font-medium text-green-900">Payment Processing</p>
-                            <p class="text-sm text-green-700">Ensures secure transaction handling</p>
+                            <p class="font-medium text-green-900">Intent: Development</p>
+                            <p class="text-sm text-green-700">Purpose: Validate new features during development phase
+                            </p>
+                            <p class="text-xs text-green-600 mt-1">Executed: 32 times | Last: 1 hour ago</p>
                         </div>
                         <span class="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
-                            E2E Tests
+                            Development
                         </span>
                     </div>
-                    <div class="flex items-center justify-between p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                    <div
+                        class="flex items-center justify-between p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
                         <div>
-                            <p class="font-medium text-purple-900">API Endpoints</p>
-                            <p class="text-sm text-purple-700">Validates backend service contracts</p>
+                            <p class="font-medium text-purple-900">Intent: Bugfix</p>
+                            <p class="text-sm text-purple-700">Purpose: Verify specific bug fixes and related
+                                functionality</p>
+                            <p class="text-xs text-purple-600 mt-1">Executed: 18 times | Last: 30 min ago</p>
                         </div>
                         <span class="text-xs bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium">
-                            API Tests
+                            Bugfix
                         </span>
+                    </div>
+                    <div
+                        class="flex items-center justify-between p-4 bg-orange-50 rounded-lg border-l-4 border-orange-400">
+                        <div>
+                            <p class="font-medium text-orange-900">Intent: Release</p>
+                            <p class="text-sm text-orange-700">Purpose: Final validation before production deployment
+                            </p>
+                            <p class="text-xs text-orange-600 mt-1">Executed: 12 times | Last: 4 hours ago</p>
+                        </div>
+                        <span class="text-xs bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-medium">
+                            Release
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Intent Parameters -->
+                <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <h4 class="text-sm font-medium text-gray-800 mb-2">Intent Parameters</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Branch:</span>
+                            <span class="text-sm font-medium text-blue-600">feature/user-auth</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Environment:</span>
+                            <span class="text-sm font-medium text-green-600">staging</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Priority:</span>
+                            <span class="text-sm font-medium text-purple-600">high</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Test Type:</span>
+                            <span class="text-sm font-medium text-orange-600">smoke + regression</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Trigger:</span>
+                            <span class="text-sm font-medium text-red-600">manual + CI</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Scope:</span>
+                            <span class="text-sm font-medium text-indigo-600">full suite</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Suite Health Monitoring -->
+            <!-- Tag/Grep Based Metrics -->
             <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                    <span class="mr-2 text-2xl">🏥</span>
-                    Suite Health Status
+                    <span class="mr-2 text-2xl">🔍</span>
+                    Tag/Grep Based Metrics
                 </h3>
                 <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm font-medium text-gray-700">E2E Test Suite</span>
-                        <div class="flex items-center">
-                            <div class="w-20 bg-gray-200 rounded-full h-3 mr-3">
-                                <div class="bg-green-500 h-3 rounded-full health-bar" style="width: 85%"></div>
-                            </div>
-                            <span class="text-sm font-medium text-green-600">85%</span>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <div>
+                            <span class="text-sm font-medium text-blue-900">Pattern: *test*</span>
+                            <p class="text-xs text-blue-600">Found in test names and descriptions</p>
                         </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+                            156 matches
+                        </span>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm font-medium text-gray-700">Unit Test Suite</span>
-                        <div class="flex items-center">
-                            <div class="w-20 bg-gray-200 rounded-full h-3 mr-3">
-                                <div class="bg-green-500 h-3 rounded-full health-bar" style="width: 92%"></div>
-                            </div>
-                            <span class="text-sm font-medium text-green-600">92%</span>
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <div>
+                            <span class="text-sm font-medium text-green-900">Grep: "should"</span>
+                            <p class="text-xs text-green-600">Behavioral test assertions</p>
                         </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium">
+                            89 matches
+                        </span>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm font-medium text-gray-700">API Test Suite</span>
-                        <div class="flex items-center">
-                            <div class="w-20 bg-gray-200 rounded-full h-3 mr-3">
-                                <div class="bg-yellow-500 h-3 rounded-full health-bar" style="width: 78%"></div>
-                            </div>
-                            <span class="text-sm font-medium text-yellow-600">78%</span>
+                    <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                        <div>
+                            <span class="text-sm font-medium text-purple-900">Tag: @smoke</span>
+                            <p class="text-xs text-purple-600">Smoke test identification</p>
                         </div>
+                        <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full font-medium">
+                            23 matches
+                        </span>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm font-medium text-gray-700">Performance Tests</span>
-                        <div class="flex items-center">
-                            <div class="w-20 bg-gray-200 rounded-full h-3 mr-3">
-                                <div class="bg-red-500 h-3 rounded-full health-bar" style="width: 65%"></div>
-                            </div>
-                            <span class="text-sm font-medium text-red-600">65%</span>
+                    <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+                        <div>
+                            <span class="text-sm font-medium text-orange-900">Pattern: *spec*</span>
+                            <p class="text-xs text-orange-600">Specification-based tests</p>
+                        </div>
+                        <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full font-medium">
+                            67 matches
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Advanced Pattern Matching -->
+                <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <h4 class="text-sm font-medium text-gray-800 mb-2">Advanced Pattern Analysis</h4>
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Regex: /error|fail|exception/</span>
+                            <span class="font-medium text-red-600">34 matches</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Wildcard: *integration*</span>
+                            <span class="font-medium text-blue-600">42 matches</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Tag: @critical</span>
+                            <span class="font-medium text-orange-600">15 matches</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Pattern: *e2e*</span>
+                            <span class="font-medium text-green-600">28 matches</span>
                         </div>
                     </div>
                 </div>
@@ -273,19 +351,27 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Test Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Member</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Project</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Duration</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Date</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">User Login Test</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">User Login Test
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                     Passed
                                 </span>
                             </td>
@@ -295,9 +381,11 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-15</td>
                         </tr>
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Payment Processing</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Payment Processing
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                     Failed
                                 </span>
                             </td>
@@ -307,9 +395,11 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-15</td>
                         </tr>
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">API Validation</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">API Validation
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                     Passed
                                 </span>
                             </td>
@@ -347,7 +437,7 @@
                     },
                     tooltip: {
                         callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                 const percentage = ((context.parsed / total) * 100).toFixed(1);
                                 return `${context.label}: ${context.parsed} (${percentage}%)`;
@@ -390,7 +480,7 @@
         });
 
         // Add some interactivity
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Animate health bars on scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -409,4 +499,5 @@
         });
     </script>
 </body>
+
 </html>
