@@ -412,6 +412,170 @@
                 </table>
             </div>
         </div>
+
+        <!-- Trace Files & Detailed Test Information -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                    <span class="mr-2 text-2xl">📁</span>
+                    Trace Files & Detailed Test Information
+                </h3>
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-upload mr-2"></i>Upload Trace Files
+                </button>
+            </div>
+
+            <!-- File Upload Section -->
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 mb-6">
+                <div class="text-center">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <h4 class="text-lg font-medium text-gray-900 mb-2">Upload Test Artifacts</h4>
+                    <p class="text-sm text-gray-600 mb-4">Drag and drop trace files, screenshots, videos, and logs</p>
+                    <div class="flex justify-center space-x-4">
+                        <button class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-200">
+                            <i class="fas fa-file-archive mr-2"></i>Trace Files (.zip)
+                        </button>
+                        <button class="bg-green-100 text-green-700 px-4 py-2 rounded-lg hover:bg-green-200">
+                            <i class="fas fa-image mr-2"></i>Screenshots
+                        </button>
+                        <button class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg hover:bg-purple-200">
+                            <i class="fas fa-video mr-2"></i>Videos
+                        </button>
+                        <button class="bg-orange-100 text-orange-700 px-4 py-2 rounded-lg hover:bg-orange-200">
+                            <i class="fas fa-file-alt mr-2"></i>Logs
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trace File Browser -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Available Trace Files -->
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-3">Available Trace Files</h4>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-blue-900">Login Test - 2024-01-15</p>
+                                    <p class="text-xs text-blue-600">Trace file, 3 screenshots, video recording</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200">
+                                        <i class="fas fa-eye mr-1"></i>View
+                                    </button>
+                                    <button class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">
+                                        <i class="fas fa-download mr-1"></i>Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-red-900">Payment Test - 2024-01-15</p>
+                                    <p class="text-xs text-red-600">Trace file, 5 screenshots, error logs</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                        <i class="fas fa-eye mr-1"></i>View
+                                    </button>
+                                    <button class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">
+                                        <i class="fas fa-download mr-1"></i>Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-400">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-green-900">API Test - 2024-01-15</p>
+                                    <p class="text-xs text-green-600">Trace file, 2 screenshots, performance logs</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">
+                                        <i class="fas fa-eye mr-1"></i>View
+                                    </button>
+                                    <button class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">
+                                        <i class="fas fa-download mr-1"></i>Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Test Analysis -->
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-3">Detailed Test Analysis</h4>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm font-medium text-gray-800">Test Execution Timeline</p>
+                            <div class="mt-2 space-y-1">
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-gray-600">Setup:</span>
+                                    <span class="font-medium">0.5s</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-gray-600">Navigation:</span>
+                                    <span class="font-medium">1.2s</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-gray-600">Interaction:</span>
+                                    <span class="font-medium">0.8s</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-gray-600">Assertion:</span>
+                                    <span class="font-medium">0.3s</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm font-medium text-gray-800">Resource Usage</p>
+                            <div class="mt-2 space-y-1">
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-gray-600">Memory:</span>
+                                    <span class="font-medium">45.2 MB</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-gray-600">CPU:</span>
+                                    <span class="font-medium">12%</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-gray-600">Network:</span>
+                                    <span class="font-medium">2.1 MB</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm font-medium text-gray-800">Error Details</p>
+                            <div class="mt-2">
+                                <p class="text-xs text-red-600">Element not found: #login-button</p>
+                                <p class="text-xs text-gray-600 mt-1">Timeout after 30 seconds</p>
+                                <p class="text-xs text-gray-600">Screenshot captured at failure</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trace Viewer Preview -->
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                <h4 class="font-medium text-gray-800 mb-3">Trace Viewer Preview</h4>
+                <div class="bg-white rounded-lg p-4 border">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <button class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded">Timeline</button>
+                        <button class="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded">Network</button>
+                        <button class="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded">Console</button>
+                        <button class="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded">Sources</button>
+                    </div>
+                    <div class="h-32 bg-gray-100 rounded flex items-center justify-center">
+                        <p class="text-gray-500 text-sm">Trace Viewer Interface</p>
+                        <p class="text-gray-400 text-xs">Interactive timeline, network calls, console logs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>

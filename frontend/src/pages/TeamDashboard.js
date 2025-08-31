@@ -322,7 +322,7 @@ const TeamDashboard = () => {
                                     },
                                     tooltip: {
                                         callbacks: {
-                                            label: function(context) {
+                                            label: function (context) {
                                                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                                 const percentage = ((context.parsed / total) * 100).toFixed(1);
                                                 return `${context.label}: ${context.parsed} (${percentage}%)`;
@@ -419,7 +419,7 @@ const TeamDashboard = () => {
                             <span className="text-sm font-medium text-gray-700">E2E Test Suite</span>
                             <div className="flex items-center">
                                 <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                                    <div className="bg-green-500 h-2 rounded-full" style={{width: '85%'}}></div>
+                                    <div className="bg-green-500 h-2 rounded-full" style={{ width: '85%' }}></div>
                                 </div>
                                 <span className="text-sm font-medium text-green-600">85%</span>
                             </div>
@@ -428,7 +428,7 @@ const TeamDashboard = () => {
                             <span className="text-sm font-medium text-gray-700">Unit Test Suite</span>
                             <div className="flex items-center">
                                 <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                                    <div className="bg-green-500 h-2 rounded-full" style={{width: '92%'}}></div>
+                                    <div className="bg-green-500 h-2 rounded-full" style={{ width: '92%' }}></div>
                                 </div>
                                 <span className="text-sm font-medium text-green-600">92%</span>
                             </div>
@@ -437,7 +437,7 @@ const TeamDashboard = () => {
                             <span className="text-sm font-medium text-gray-700">API Test Suite</span>
                             <div className="flex items-center">
                                 <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                                    <div className="bg-yellow-500 h-2 rounded-full" style={{width: '78%'}}></div>
+                                    <div className="bg-yellow-500 h-2 rounded-full" style={{ width: '78%' }}></div>
                                 </div>
                                 <span className="text-sm font-medium text-yellow-600">78%</span>
                             </div>
@@ -446,7 +446,7 @@ const TeamDashboard = () => {
                             <span className="text-sm font-medium text-gray-700">Performance Tests</span>
                             <div className="flex items-center">
                                 <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                                    <div className="bg-red-500 h-2 rounded-full" style={{width: '65%'}}></div>
+                                    <div className="bg-red-500 h-2 rounded-full" style={{ width: '65%' }}></div>
                                 </div>
                                 <span className="text-sm font-medium text-red-600">65%</span>
                             </div>

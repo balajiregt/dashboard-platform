@@ -105,7 +105,7 @@ chmod +x start-team-server.sh
 - Navigation to detailed views
 
 ### **👥 Team Dashboard** *(Main Feature)*
-- **🎯 Intent Capturing**: Test purpose and business logic mapping
+- **🎯 Tag-Based Intent Capturing**: Automated test categorization using patterns and tags
 - **📊 Pass/Fail Analytics**: Real-time success rates and trends
 - **🏥 Suite Health Monitoring**: Test suite vitality and performance
 - **🔄 Flaky Test Detection**: Pattern recognition and root cause analysis
@@ -120,17 +120,21 @@ chmod +x start-team-server.sh
 - Interactive charts (Doughnut, Line, Bar, Radar)
 
 ### **🔍 Execution Details**
-- Individual test result details
-- Screenshots and videos
-- Error logs and stack traces
+- **Individual test result details** with full context
+- **Trace files (.zip)** - Complete Playwright execution traces
+- **Screenshots and videos** - Visual test execution records
+- **Error logs and stack traces** - Detailed failure analysis
+- **Performance metrics** - Resource usage and timing data
+- **Network logs** - API calls and responses
+- **Console logs** - Browser console output
 
 ## 🎯 **Core Dashboard Features**
 
-### **1. 🎯 Intent Capturing of Tests**
-- **Test Purpose Analysis**: Understand why each test exists and what it validates
-- **Business Logic Mapping**: Connect tests to specific business requirements
-- **Test Coverage Intent**: Track what functionality each test suite covers
-- **Requirement Traceability**: Link tests back to user stories and specifications
+### **1. 🎯 Intent Capturing of Tests (Tag/Grep-Based)**
+- **Automated Test Categorization**: Use tags, patterns, and grep-based analysis
+- **Smart Pattern Recognition**: Automatically identify test purposes from names and content
+- **Tag Distribution Analysis**: Track test coverage by functional areas
+- **Pattern Matching**: Use wildcards and regex to categorize similar tests
 
 ### **2. 📊 Total Pass and Fail Percentage**
 - **Real-time Success Rates**: Live updates of test execution results
@@ -149,6 +153,13 @@ chmod +x start-team-server.sh
 - **Pattern Recognition**: Detect environmental and timing-related issues
 - **Root Cause Analysis**: Understand why tests are flaky
 - **Stabilization Recommendations**: Suggest fixes for flaky tests
+
+### **5. 📁 Trace Files & Detailed Test Information**
+- **Complete Trace Files**: Upload and store Playwright trace files (.zip)
+- **Visual Test Records**: Screenshots, videos, and error captures
+- **Performance Analysis**: Resource usage, timing, and network logs
+- **Interactive Trace Viewer**: Timeline, console, and network analysis
+- **Team Collaboration**: Share and analyze test artifacts together
 
 ## ☁️ **Cloud Storage Architecture**
 
