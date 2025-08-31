@@ -268,22 +268,22 @@ const TeamDashboard = () => {
                     color="blue"
                 />
                 <SummaryCard
-                    title="Success Rate"
-                    value={`${summary.successRate || 0}%`}
+                    title="Pass Rate"
+                    value={`${summary.passRate || 0}%`}
                     icon={CheckCircleIcon}
                     color="green"
                 />
                 <SummaryCard
-                    title="Team Members"
-                    value={summary.teamMemberCount || 0}
-                    icon={UserGroupIcon}
-                    color="purple"
+                    title="Fail Rate"
+                    value={`${summary.failRate || 0}%`}
+                    icon={XCircleIcon}
+                    color="red"
                 />
                 <SummaryCard
-                    title="Avg Execution Time"
-                    value={`${summary.avgExecutionTime || 0}s`}
-                    icon={ClockIcon}
-                    color="orange"
+                    title="Suite Health"
+                    value={`${summary.suiteHealth || 0}%`}
+                    icon={ChartBarIcon}
+                    color="purple"
                 />
             </div>
 
@@ -319,6 +319,15 @@ const TeamDashboard = () => {
                                 plugins: {
                                     legend: {
                                         position: 'bottom'
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(context) {
+                                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                                return `${context.label}: ${context.parsed} (${percentage}%)`;
+                                            }
+                                        }
                                     }
                                 }
                             }}
@@ -356,6 +365,148 @@ const TeamDashboard = () => {
                                 }
                             }}
                         />
+                    </div>
+                </div>
+            </div>
+
+            {/* New Feature Sections */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                {/* Intent Capturing */}
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <span className="mr-2">🎯</span>
+                        Test Intent & Purpose
+                    </h3>
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                            <div>
+                                <p className="font-medium text-blue-900">Login Functionality</p>
+                                <p className="text-sm text-blue-700">Validates user authentication flow</p>
+                            </div>
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                                Auth Tests
+                            </span>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                            <div>
+                                <p className="font-medium text-green-900">Payment Processing</p>
+                                <p className="text-sm text-green-700">Ensures secure transaction handling</p>
+                            </div>
+                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                                E2E Tests
+                            </span>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                            <div>
+                                <p className="font-medium text-purple-900">API Endpoints</p>
+                                <p className="text-sm text-purple-700">Validates backend service contracts</p>
+                            </div>
+                            <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                                API Tests
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Suite Health Monitoring */}
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <span className="mr-2">🏥</span>
+                        Suite Health Status
+                    </h3>
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-700">E2E Test Suite</span>
+                            <div className="flex items-center">
+                                <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                    <div className="bg-green-500 h-2 rounded-full" style={{width: '85%'}}></div>
+                                </div>
+                                <span className="text-sm font-medium text-green-600">85%</span>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-700">Unit Test Suite</span>
+                            <div className="flex items-center">
+                                <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                    <div className="bg-green-500 h-2 rounded-full" style={{width: '92%'}}></div>
+                                </div>
+                                <span className="text-sm font-medium text-green-600">92%</span>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-700">API Test Suite</span>
+                            <div className="flex items-center">
+                                <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                    <div className="bg-yellow-500 h-2 rounded-full" style={{width: '78%'}}></div>
+                                </div>
+                                <span className="text-sm font-medium text-yellow-600">78%</span>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-700">Performance Tests</span>
+                            <div className="flex items-center">
+                                <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                    <div className="bg-red-500 h-2 rounded-full" style={{width: '65%'}}></div>
+                                </div>
+                                <span className="text-sm font-medium text-red-600">65%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Flaky Test Patterns */}
+            <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <span className="mr-2">🔄</span>
+                    Flaky Test Pattern Detection
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 className="font-medium text-gray-800 mb-3">Intermittent Failures</h4>
+                        <div className="space-y-3">
+                            <div className="p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm font-medium text-red-800">Login Test</span>
+                                    <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">
+                                        3 failures
+                                    </span>
+                                </div>
+                                <p className="text-xs text-red-600 mt-1">Fails randomly during peak hours</p>
+                            </div>
+                            <div className="p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm font-medium text-yellow-800">Payment Test</span>
+                                    <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                                        2 failures
+                                    </span>
+                                </div>
+                                <p className="text-xs text-yellow-600 mt-1">Timeout issues on slow networks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 className="font-medium text-gray-800 mb-3">Root Cause Analysis</h4>
+                        <div className="space-y-3">
+                            <div className="p-3 bg-blue-50 rounded-lg">
+                                <p className="text-sm font-medium text-blue-800">Network Latency</p>
+                                <p className="text-xs text-blue-600">High network latency causing timeouts</p>
+                                <div className="mt-2">
+                                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                                        Recommendation: Increase timeout values
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="p-3 bg-green-50 rounded-lg">
+                                <p className="text-sm font-medium text-green-800">Resource Contention</p>
+                                <p className="text-xs text-green-600">Shared resources causing race conditions</p>
+                                <div className="mt-2">
+                                    <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                                        Recommendation: Add resource isolation
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
